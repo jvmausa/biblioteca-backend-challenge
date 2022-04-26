@@ -11,6 +11,8 @@ import com.jvmausa.biblioteca.domain.repository.LivroRepository;
 @Service
 public class CadastroLivroService {
 
+	public static boolean salvar;
+
 	@Autowired
 	private LivroRepository livroRepository;
 
@@ -20,9 +22,8 @@ public class CadastroLivroService {
 
 	@Transactional
 	public Livro salvar(Livro livro) {
-		
-		return livroRepository.save(livro);
 
+		return livroRepository.save(livro);
 	}
 
 }

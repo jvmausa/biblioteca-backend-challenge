@@ -44,8 +44,8 @@ public class LivroController {
 		return livros;
 	}
 
-	@PostMapping(path = "/{id}")
-	public LivroModel adicionar(@PathVariable Long id, @RequestBody @Valid LivroInput livroInput) {
+	@PostMapping()
+	public LivroModel adicionar(@RequestBody @Valid LivroInput livroInput) {
 
 		Livro livro = livroInputDisassembler.toDomainObject(livroInput);
 

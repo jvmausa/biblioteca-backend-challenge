@@ -8,4 +8,6 @@ import com.jvmausa.biblioteca.domain.model.Livro;
 @Repository
 public interface LivroRepository extends JpaRepository<Livro, Long> {
 
+	public Livro findByAutores(String nome);
+
 }

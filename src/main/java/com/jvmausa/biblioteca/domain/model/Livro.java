@@ -1,7 +1,7 @@
 package com.jvmausa.biblioteca.domain.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -37,6 +37,6 @@ public class Livro {
 	@ElementCollection
 	@CollectionTable(name = "autor")
 	@Column(name = "autores_list")
-	private Collection<String> autores = new ArrayList<String>();
+	private Set<String> autores = new HashSet<String>();
 
 }
