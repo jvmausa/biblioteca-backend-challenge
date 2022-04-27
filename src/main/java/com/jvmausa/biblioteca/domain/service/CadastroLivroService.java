@@ -3,6 +3,7 @@ package com.jvmausa.biblioteca.domain.service;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.jvmausa.biblioteca.domain.exceptionhandler.LivroNaoEncontradoException;
@@ -31,7 +32,13 @@ public class CadastroLivroService {
 	
 	@Transactional
 	public void excluirLivro(Long id) {
-		livroRepository.deleteById(id);
+		
+		try {
+			livroRepository.deleteById(id);
+			
+		} catch (EmptyResultDataAccessException e) {
+			throw new LivroNaoEncontradoException(id);
+		}
 		
 	}
 	
