@@ -5,6 +5,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jvmausa.biblioteca.domain.exceptionhandler.LivroNaoEncontradoException;
 import com.jvmausa.biblioteca.domain.model.Livro;
 import com.jvmausa.biblioteca.domain.repository.LivroRepository;
 
@@ -17,7 +18,8 @@ public class CadastroLivroService {
 	private LivroRepository livroRepository;
 
 	public Livro buscarLivro(Long id) {
-		return livroRepository.findById(id).orElseThrow(/* TODO criar exception personalizada */);
+		return livroRepository.findById(id)
+				.orElseThrow(() -> new LivroNaoEncontradoException(id));
 	}
 
 	@Transactional
@@ -26,4 +28,11 @@ public class CadastroLivroService {
 		return livroRepository.save(livro);
 	}
 
+	
+	@Transactional
+	public void excluirLivro(Long id) {
+		livroRepository.deleteById(id);
+		
+	}
+	
 }
