@@ -1,16 +1,18 @@
 package com.jvmausa.biblioteca.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jvmausa.biblioteca.api.assembler.LivroInputDisassembler;
@@ -38,22 +40,17 @@ public class LivroController {
 	private LivroModelAssembler livroModelAssembler;
 
 	@GetMapping
-	public List<Livro> listar() {
-		List<Livro> livros = livroRepository.findAll();
-
-		return livros;
+	public CollectionModel<LivroModel> listar() {
+		return livroModelAssembler.toCollectionModel(livroRepository.findAll());
 	}
 
-	@PostMapping()
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
 	public LivroModel adicionar(@RequestBody @Valid LivroInput livroInput) {
 
 		Livro livro = livroInputDisassembler.toDomainObject(livroInput);
 
-		livro = cadastroLivroService.salvar(livro);
-
-		LivroModel livroModel = livroModelAssembler.toModel(livro);
-
-		return livroModel;
+		return livroModelAssembler.toModel(cadastroLivroService.salvar(livro));
 
 	}
 
@@ -64,6 +61,13 @@ public class LivroController {
 		livroInputDisassembler.copyToDomainObject(livroInput, livroAtual);
 
 		return livroModelAssembler.toModel(cadastroLivroService.salvar(livroAtual));
+
+	}
+
+	@DeleteMapping(path = "/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deletar(@PathVariable Long id) {
+		cadastroLivroService.excluirLivro(id);
 
 	}
 
