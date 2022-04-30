@@ -19,27 +19,24 @@ public class CadastroLivroService {
 	private LivroRepository livroRepository;
 
 	public Livro buscarLivro(Long id) {
-		return livroRepository.findById(id)
-				.orElseThrow(() -> new LivroNaoEncontradoException(id));
+		return livroRepository.findById(id).orElseThrow(() -> new LivroNaoEncontradoException(id));
 	}
 
 	@Transactional
 	public Livro salvar(Livro livro) {
-
 		return livroRepository.save(livro);
 	}
 
-	
 	@Transactional
 	public void excluirLivro(Long id) {
-		
+
 		try {
 			livroRepository.deleteById(id);
-			
+
 		} catch (EmptyResultDataAccessException e) {
 			throw new LivroNaoEncontradoException(id);
 		}
-		
+
 	}
-	
+
 }
